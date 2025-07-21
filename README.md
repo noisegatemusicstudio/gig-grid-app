@@ -60,21 +60,41 @@ npm run start:fresh # Force fresh start (same as npm start)
 
 ```
 mobile-expo/
-├── App.js              # Main app component with welcome page
-├── app.json           # Expo configuration
-├── package.json       # Dependencies and scripts
-└── assets/           # Images and icons
+├── App.js                    # Main application entry point
+├── src/
+│   ├── components/           # Reusable UI components
+│   │   ├── Header.js        # App header with logo and tagline
+│   │   ├── WelcomeMessage.js # Welcome section component
+│   │   ├── FeatureCard.js   # Individual feature card component
+│   │   ├── FeaturesSection.js # Features list container
+│   │   ├── Button.js        # Reusable button component
+│   │   ├── ActionButtons.js # Action buttons section
+│   │   ├── Footer.js        # App footer component
+│   │   └── index.js         # Component exports
+│   ├── screens/             # Screen components
+│   │   ├── WelcomeScreen.js # Welcome/landing screen
+│   │   └── index.js         # Screen exports
+│   └── styles/              # Shared styling and theme
+│       └── theme.js         # Design system configuration
+├── app.json                 # Expo configuration
+├── package.json            # Dependencies and scripts
+├── start-expo.sh           # Development server script
+└── assets/                 # Images and icons
 ```
+
+For detailed architecture documentation, see [Mobile App Architecture](docs/mobile-app-architecture.md).
 
 ## Current Features
 
-- ✅ Welcome Page with modern UI built with Expo
-- ✅ React Native with JavaScript
-- ✅ Cross-platform (iOS, Android, Web)
-- ✅ Live reload during development
-- ✅ Instant device testing with Expo Go
-- ✅ Beautiful gradient design and animations
-- ✅ Responsive layout
+- ✅ **Modular Architecture**: Clean component-based structure
+- ✅ **Design System**: Centralized theme and styling
+- ✅ **Welcome Page**: Modern UI built with Expo
+- ✅ **Reusable Components**: Header, FeatureCard, Button, etc.
+- ✅ **Cross-platform**: iOS, Android, Web support
+- ✅ **Live Reload**: Instant development feedback
+- ✅ **Device Testing**: Expo Go app integration
+- ✅ **Auto Port Management**: No manual port conflicts
+- ✅ **Responsive Layout**: Works on all screen sizes
 
 ### App Screenshots
 
