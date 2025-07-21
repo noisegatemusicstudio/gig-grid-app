@@ -10,19 +10,72 @@
     "web": "./start-expo.sh --web",
     "kill-expo": "killall node 2>/dev/null || true",
     "dev": "./start-expo.sh",
-    "clean": "killall node 2>/dev/null || true && rm -rf .expo && rm -rf node_modules/.cache"
+    "clean": "killall node 2>/dev/null || true && rm -rf .expo && rm -rf node_modules/.cache",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --coverage --watchAll=false"
   },
   "dependencies": {
+    "@expo/metro-runtime": "~5.0.4",
     "expo": "~53.0.20",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
+    "react-dom": "19.0.0",
     "react-native": "0.79.5",
-    "react-native-web": "^0.20.0",
-    "@expo/metro-runtime": "~5.0.4",
-    "react-dom": "19.0.0"
+    "react-native-web": "^0.20.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^13.2.0",
+    "babel-jest": "^30.0.4",
+    "babel-preset-expo": "^13.2.3",
+    "jest": "^30.0.4",
+    "jest-environment-jsdom": "^30.0.4",
+    "jest-transform-stub": "^2.0.0",
+    "react-test-renderer": "^19.0.0"
   },
-  "private": true
+  "private": true,
+  "jest": {
+    "preset": "react-native",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-native|@react-native|expo|@expo|react-clone-referenced-element|@react-native-community|react-navigation|@react-navigation/.*|@unimodules/.*|native-base|react-native-svg|react-native-iphone-x-helper|react-native-vector-icons)/)"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.(ts|tsx|js|jsx)",
+      "**/*.(test|spec).(ts|tsx|js|jsx)"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/index.js",
+      "!**/node_modules/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "jest-transform-stub"
+    }
+  }
 }
