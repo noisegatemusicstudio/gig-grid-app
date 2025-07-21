@@ -1,0 +1,19 @@
+{
+  "name": "gig-grid-app",
+  "version": "1.0.0",
+  "description": "GigGrid Mobile Application",
+  "main": "mobile-expo/App.js",
+  "scripts": {
+    "start": "cd mobile-expo && ./start-expo.sh",
+    "android": "cd mobile-expo && ./start-expo.sh --android",
+    "ios": "cd mobile-expo && ./start-expo.sh --ios",
+    "web": "cd mobile-expo && ./start-expo.sh --web",
+    "install-deps": "cd mobile-expo && npm install",
+    "build:android": "cd mobile-expo && npx expo build:android",
+    "build:ios": "cd mobile-expo && npx expo build:ios",
+    "clean": "cd mobile-expo && npm run clean"
+  },
+  "keywords": ["react-native", "expo", "mobile", "gig"],
+  "author": "GigGrid Team",
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "name": "mobile-expo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "./start-expo.sh",
+    "start:fresh": "./start-expo.sh",
+    "android": "./start-expo.sh --android",
+    "ios": "./start-expo.sh --ios",
+    "web": "./start-expo.sh --web",
+    "kill-expo": "killall node 2>/dev/null || true",
+    "dev": "./start-expo.sh",
+    "clean": "killall node 2>/dev/null || true && rm -rf .expo && rm -rf node_modules/.cache"
+  },
+  "dependencies": {
+    "expo": "~53.0.20",
+    "expo-status-bar": "~2.2.3",
+    "react": "19.0.0",
+    "react-native": "0.79.5",
+    "react-native-web": "^0.20.0",
+    "@expo/metro-runtime": "~5.0.4",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0"
+  },
+  "private": true
+}
