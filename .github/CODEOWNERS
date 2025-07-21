@@ -1,0 +1,33 @@
+# Global code owners - require review from repository owner
+* @noisegatemusicstudio
+
+# Backend/API code requires backend expertise
+/api/ @noisegatemusicstudio
+/lambda/ @noisegatemusicstudio
+/backend/ @noisegatemusicstudio
+
+# Configuration files are critical and need careful review
+/config/ @noisegatemusicstudio
+/.env* @noisegatemusicstudio
+
+# Infrastructure and deployment configurations
+/.github/ @noisegatemusicstudio
+/terraform/ @noisegatemusicstudio
+/infrastructure/ @noisegatemusicstudio
+
+# Database migrations and schemas
+/migrations/ @noisegatemusicstudio
+/schemas/ @noisegatemusicstudio
+
+# Documentation updates
+/docs/ @noisegatemusicstudio
+README.md @noisegatemusicstudio
+
+# Feature files and test specifications
+/features/ @noisegatemusicstudio
+/test-data/ @noisegatemusicstudio
+
+# Security-sensitive files
+/security/ @noisegatemusicstudio
+*.key @noisegatemusicstudio
+*.pem @noisegatemusicstudio

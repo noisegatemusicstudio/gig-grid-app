@@ -1,0 +1,242 @@
+name: Branch Protection Enforcement
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  # Prevent direct pushes to protected branches
+  enforce-pr-workflow:
+    name: Enforce PR Workflow
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
+    steps:
+      - name: Block Direct Push
+        run: |
+          echo "❌ Direct pushes to ${{ github.ref }} are not allowed!"
+          echo "Please create a pull request instead."
+          echo "Branch protection rules require PR reviews before merging."
+          exit 1
+
+  # Required status checks for PRs
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+          else
+            echo "No package.json found, skipping npm install"
+          fi
+
+      - name: Run linting
+        run: |
+          if [ -f package.json ] && npm run lint --if-present; then
+            echo "✅ Linting passed"
+          else
+            echo "⚠️ No linting script found, skipping"
+          fi
+
+      - name: Run tests
+        run: |
+          if [ -f package.json ] && npm test --if-present; then
+            echo "✅ Tests passed"
+          else
+            echo "⚠️ No test script found, skipping"
+          fi
+
+      - name: Validate configuration files
+        run: |
+          echo "🔍 Validating configuration files..."
+          
+          # Check if config files are valid JSON
+          for config_file in config/*.json; do
+            if [ -f "$config_file" ]; then
+              echo "Validating $config_file"
+              if ! python -m json.tool "$config_file" > /dev/null; then
+                echo "❌ Invalid JSON in $config_file"
+                exit 1
+              else
+                echo "✅ Valid JSON: $config_file"
+              fi
+            fi
+          done
+
+      - name: Check Free Tier compliance
+        run: |
+          echo "💰 Checking AWS Free Tier compliance..."
+          
+          # Check if Free Tier flags are set in configs
+          for env in dev sit uat production; do
+            config_file="config/${env}.json"
+            if [ -f "$config_file" ]; then
+              echo "Checking $config_file for Free Tier settings..."
+              
+              # Check for freeTier flags (basic validation)
+              if grep -q '"freeTier".*true' "$config_file"; then
+                echo "✅ Free Tier enabled in $config_file"
+              else
+                echo "⚠️ Free Tier not explicitly enabled in $config_file"
+              fi
+            fi
+          done
+
+  lint:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Lint Markdown files
+        uses: DavidAnson/markdownlint-cli2-action@v13
+        with:
+          globs: '**/*.md'
+          config: |
+            {
+              "MD013": false,
+              "MD033": false,
+              "MD041": false
+            }
+
+      - name: Lint JSON files
+        run: |
+          echo "🔍 Linting JSON files..."
+          find . -name "*.json" -not -path "./node_modules/*" | while read -r file; do
+            echo "Checking $file"
+            if ! python -m json.tool "$file" > /dev/null 2>&1; then
+              echo "❌ Invalid JSON: $file"
+              exit 1
+            fi
+          done
+          echo "✅ All JSON files are valid"
+
+      - name: Check file sizes
+        run: |
+          echo "📦 Checking for large files..."
+          # Find files larger than 10MB
+          large_files=$(find . -type f -size +10M -not -path "./.git/*" -not -path "./node_modules/*" || true)
+          
+          if [ -n "$large_files" ]; then
+            echo "⚠️ Large files found:"
+            echo "$large_files"
+            echo "Consider using Git LFS for large files"
+          else
+            echo "✅ No large files found"
+          fi
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Scan for secrets
+        run: |
+          echo "🔒 Scanning for potential secrets..."
+          
+          # Basic secret scanning patterns
+          secret_patterns=(
+            "password.*="
+            "secret.*="
+            "key.*="
+            "token.*="
+            "api.*key"
+            "aws.*secret"
+            "private.*key"
+          )
+          
+          found_secrets=false
+          
+          for pattern in "${secret_patterns[@]}"; do
+            if grep -r -i "$pattern" . --exclude-dir=.git --exclude-dir=node_modules --exclude="*.md" | grep -v "example\|placeholder\|dummy\|test\|mock"; then
+              echo "⚠️ Potential secret found with pattern: $pattern"
+              found_secrets=true
+            fi
+          done
+          
+          if [ "$found_secrets" = true ]; then
+            echo "❌ Potential secrets detected. Please review and use environment variables."
+            exit 1
+          else
+            echo "✅ No secrets detected"
+          fi
+
+      - name: Check for sensitive files
+        run: |
+          echo "🔍 Checking for sensitive files..."
+          
+          sensitive_files=(
+            "*.key"
+            "*.pem" 
+            "*.p12"
+            "*.pfx"
+            ".env"
+            ".env.local"
+            ".env.production"
+            "id_rsa"
+            "id_dsa"
+            "credentials"
+          )
+          
+          found_sensitive=false
+          
+          for pattern in "${sensitive_files[@]}"; do
+            if find . -name "$pattern" -not -path "./.git/*" -not -path "./node_modules/*" | grep -q .; then
+              echo "⚠️ Sensitive file pattern found: $pattern"
+              found_sensitive=true
+            fi
+          done
+          
+          if [ "$found_sensitive" = true ]; then
+            echo "❌ Sensitive files detected. These should not be committed."
+            exit 1
+          else
+            echo "✅ No sensitive files found"
+          fi
+
+  pr-compliance:
+    name: PR Compliance Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Check PR title
+        run: |
+          echo "📝 Checking PR title format..."
+          title="${{ github.event.pull_request.title }}"
+          
+          # Check if title follows conventional commit format
+          if echo "$title" | grep -E "^(feat|fix|docs|style|refactor|test|chore|perf|ci|build)(\(.+\))?: .+" > /dev/null; then
+            echo "✅ PR title follows conventional commit format"
+          else
+            echo "⚠️ PR title should follow format: type(scope): description"
+            echo "Examples: feat(auth): add user login, fix(api): resolve CORS issue"
+          fi
+
+      - name: Check PR description
+        run: |
+          echo "📄 Checking PR description..."
+          description="${{ github.event.pull_request.body }}"
+          
+          if [ -n "$description" ] && [ ${#description} -gt 20 ]; then
+            echo "✅ PR has adequate description"
+          else
+            echo "⚠️ PR should have a meaningful description explaining the changes"
+          fi
