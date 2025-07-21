@@ -1,0 +1,29 @@
+user_type,artist_type,first_name,last_name,band_name,stage_name,contact_person,email,password,date_of_birth,location,phone_number,genres,primary_instrument,num_members,bio,profile_status
+fan,,John,Musiclover,,,,"john.musiclover@example.amazonses.com",SecurePass123!,1990-05-15,"Los Angeles, CA",,Rock|Jazz|Hip Hop,,,,"Passionate music lover who enjoys live shows",complete
+fan,,Sarah,Johnson,,,,"sarah.johnson@example.amazonses.com",FanPass456!,1985-03-22,"New York, NY",,Pop|R&B|Soul,,,,"R&B enthusiast and concert photographer",complete
+fan,,Michael,Chen,,,,"michael.chen@example.amazonses.com",MusicFan789!,1992-11-08,"Chicago, IL",,Electronic|Techno|House,,,,"Electronic music DJ and producer",complete
+fan,,Emily,Rodriguez,,,,"emily.rodriguez@example.amazonses.com",LiveMusic123!,1988-07-14,"Austin, TX",,Country|Folk|Americana,,,,"Country music blogger and festival goer",complete
+fan,,David,Thompson,,,,"david.thompson@example.amazonses.com",RockFan456!,1991-09-30,"Seattle, WA",,Grunge|Alternative|Rock,,,,"Vinyl collector and music historian",complete
+fan,,Lisa,Williams,,,,"lisa.williams@example.amazonses.com",JazzLover789!,1987-01-25,"New Orleans, LA",,Jazz|Blues|Classical,,,,"Jazz vocalist and music teacher",complete
+fan,,Kevin,Brown,,,,"kevin.brown@example.amazonses.com",MetalHead123!,1993-04-12,"Detroit, MI",,Metal|Hardcore|Punk,,,,"Metal enthusiast and concert organizer",complete
+fan,,Amanda,Davis,,,,"amanda.davis@example.amazonses.com",IndieMusic456!,1989-12-03,"Portland, OR",,Indie|Alternative|Folk,,,,"Indie music critic and blogger",complete
+band,band,,,The Midnight Rockers,,Jane Smith,"band.midnightrockers@example.amazonses.com",BandPass123!,1988-03-22,"Nashville, TN",+1-555-123-4567,Rock|Alternative|Indie,,4,"Indie rock band from Nashville blending classic and modern sounds",complete
+band,band,,,Electric Storm,,Mike Johnson,"band.electricstorm@example.amazonses.com",StormPass456!,1985-06-15,"Los Angeles, CA",+1-555-234-5678,Electronic|Rock|Progressive,,5,"Progressive electronic rock band pushing musical boundaries",complete
+band,band,,,The Velvet Echoes,,Sarah Connor,"band.velvetechoes@example.amazonses.com",VelvetPass789!,1990-09-08,"Brooklyn, NY",+1-555-345-6789,Indie|Dream Pop|Shoegaze,,3,"Dream pop trio creating atmospheric soundscapes",complete
+band,band,,,Neon Highway,,Carlos Martinez,"band.neonhighway@example.amazonses.com",NeonPass123!,1987-11-20,"Miami, FL",+1-555-456-7890,Pop|Synth-pop|New Wave,,4,"Synth-pop band inspired by 80s new wave",complete
+band,band,,,The Broken Strings,,Alex Thompson,"band.brokenstrings@example.amazonses.com",BrokenPass456!,1992-02-14,"Chicago, IL",+1-555-567-8901,Folk|Country|Americana,,6,"Folk country band with traditional American roots",complete
+band,band,,,Crimson Tide,,Rachel Green,"band.crimsontide@example.amazonses.com",CrimsonPass789!,1989-08-07,"Portland, OR",+1-555-678-9012,Grunge|Alternative|Rock,,4,"Grunge revival band keeping the Seattle sound alive",complete
+band,band,,,The Jazz Collective,,Daniel Lee,"band.jazzcollective@example.amazonses.com",JazzPass123!,1986-05-30,"New Orleans, LA",+1-555-789-0123,Jazz|Fusion|Contemporary,,7,"Contemporary jazz ensemble with fusion influences",complete
+band,band,,,Digital Dreams,,Sophie Kim,"band.digitaldreams@example.amazonses.com",DigitalPass456!,1991-10-12,"San Francisco, CA",+1-555-890-1234,Electronic|Ambient|Experimental,,3,"Electronic ambient group creating immersive experiences",complete
+solo_artist,solo_artist,Alex,Rivera,,Alex Rivers,,"solo.alexrivers@example.amazonses.com",SoloPass789!,1992-07-14,"Austin, TX",+1-555-987-6543,Folk|Acoustic|Singer-Songwriter,Guitar,1,"Singer-songwriter with storytelling through acoustic melodies",complete
+solo_artist,solo_artist,Maya,Patel,,Maya P,,"solo.mayapatel@example.amazonses.com",MayaPass123!,1990-04-18,"Nashville, TN",+1-555-876-5432,Country|Pop|Contemporary,Vocals,1,"Country-pop vocalist with contemporary Nashville sound",complete
+solo_artist,solo_artist,Jordan,Williams,,J.Will,,"solo.jordanwilliams@example.amazonses.com",JordanPass456!,1988-12-25,"Atlanta, GA",+1-555-765-4321,Hip Hop|R&B|Soul,Vocals,1,"Hip-hop artist and producer with R&B influences",complete
+solo_artist,solo_artist,Elena,Vasquez,,Elena V,,"solo.elenavasquez@example.amazonses.com",ElenaPass789!,1993-01-09,"Los Angeles, CA",+1-555-654-3210,Latin|Pop|World,Vocals,1,"Latin pop artist celebrating cultural heritage through music",complete
+solo_artist,solo_artist,Ryan,O'Connor,,Ryan O,,"solo.ryanoconnor@example.amazonses.com",RyanPass123!,1987-03-17,"Boston, MA",+1-555-543-2109,Rock|Blues|Alternative,Guitar,1,"Blues rock guitarist with alternative edge",complete
+solo_artist,solo_artist,Zoe,Mitchell,,Zoe M,,"solo.zoemitchell@example.amazonses.com",ZoePass456!,1991-08-22,"Seattle, WA",+1-555-432-1098,Indie|Electronic|Pop,Keyboard,1,"Indie electronic artist creating atmospheric pop",complete
+solo_artist,solo_artist,Marcus,Jackson,,M.Jack,,"solo.marcusjackson@example.amazonses.com",MarcusPass789!,1989-06-11,"Detroit, MI",+1-555-321-0987,Hip Hop|Rap|Urban,Vocals,1,"Hip-hop artist and social activist from Detroit",complete
+solo_artist,solo_artist,Aria,Thompson,,Aria,,"solo.ariathompson@example.amazonses.com",AriaPass123!,1994-09-05,"Denver, CO",+1-555-210-9876,Folk|Indie|Acoustic,Guitar,1,"Folk indie artist with environmental activism themes",complete
+fan,,Test,User,,,,"existing@example.amazonses.com",ExistingPass123!,1985-01-01,"Test City, TC",,Rock,,,,"Test user for duplicate email scenarios",complete
+fan,,Unverified,User,,,,"unverified@example.amazonses.com",UnverifiedPass123!,1990-01-01,"Test City, TC",,Pop,,,,"Test user with unverified email",incomplete
+fan,,Locked,User,,,,"locked@example.amazonses.com",LockedPass123!,1985-01-01,"Test City, TC",,Rock,,,,"Test user with locked account",locked
+fan,,Young,User,,,,"young.fan@example.amazonses.com",YoungPass123!,2015-05-15,"Test City, TC",,Pop,,,,"Underage test user for validation",incomplete

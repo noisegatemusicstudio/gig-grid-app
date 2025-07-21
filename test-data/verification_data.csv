@@ -1,0 +1,13 @@
+scenario,email,verification_status,verification_date,notes
+email_verification,"john.musiclover@example.amazonses.com",verified,2025-07-20,"Successfully verified fan account"
+email_verification,"band.midnightrockers@example.amazonses.com",verified,2025-07-19,"Successfully verified band account"
+email_verification,"solo.alexrivers@example.amazonses.com",verified,2025-07-18,"Successfully verified solo artist account"
+email_verification,"unverified@example.amazonses.com",pending,,"Test case for unverified email scenario"
+password_reset,"user@example.amazonses.com",active,2025-07-21,"Active password reset link"
+password_reset,"expired.reset@example.amazonses.com",expired,2025-06-20,"Expired password reset link for testing"
+duplicate_email,"existing@example.amazonses.com",verified,2025-07-15,"Existing user for duplicate email tests"
+account_lockout,"locked@example.amazonses.com",locked,2025-07-21,"Account locked after failed attempts"
+social_auth,"google.user@example.amazonses.com",verified,2025-07-20,"Google OAuth verified user"
+artist_verification,"verified.artist@example.amazonses.com",artist_verified,2025-07-19,"Artist with completed verification process"
+artist_verification,"pending.artist@example.amazonses.com",verification_pending,2025-07-21,"Artist with pending verification"
+two_factor_auth,"2fa.user@example.amazonses.com",2fa_enabled,2025-07-20,"User with two-factor authentication enabled"
