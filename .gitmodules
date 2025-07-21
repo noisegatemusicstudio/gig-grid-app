@@ -1,0 +1,3 @@
+[submodule "test-frameworks/playwright-framework"]
+	path = test-frameworks/playwright-framework
+	url = https://github.com/noisegatemusicstudio/universal-playwright-framework.git
