@@ -18,7 +18,9 @@ gig-grid-app/
 │   ├── uat.json                       # UAT environment config
 │   └── production.json                # Production environment config
 ├── docs/                              # Documentation
-│   └── branching-strategy.md          # Git branching strategy
+│   ├── branching-strategy.md          # Git branching strategy
+│   ├── playwright-framework-summary.md # Web testing framework docs
+│   └── appium2-framework-summary.md   # Mobile testing framework docs
 ├── features/                          # BDD Feature files
 │   ├── user_registration.feature      # User sign-up scenarios
 │   ├── user_signin.feature           # User authentication scenarios
@@ -29,11 +31,32 @@ gig-grid-app/
 │   ├── test_users.csv                 # Comprehensive user test data
 │   ├── verification_data.csv          # Email and verification test data
 │   └── README.md                      # Test data documentation
+├── test-frameworks/                   # Universal testing frameworks (git submodules)
+│   ├── playwright-framework/          # Web E2E testing framework
+│   └── appium2-framework/             # Mobile testing framework
 ├── step_definitions/                   # Step implementations (to be created)
 ├── src/                               # Source code (to be created)
 ├── tests/                             # Test files (to be created)
 └── README.md                          # This file
 ```
+
+## 🧪 Testing Frameworks
+
+This project includes two professional-grade, universal testing frameworks that can be used across any project:
+
+### 🌐 Web Testing - Universal Playwright Framework
+- **Repository**: https://github.com/noisegatemusicstudio/universal-playwright-framework
+- **Status**: ✅ Production Ready (4/4 tests passing)
+- **Features**: Cross-browser testing, mobile responsive, API testing, smart test data
+- **Documentation**: [`docs/playwright-framework-summary.md`](docs/playwright-framework-summary.md)
+
+### 📱 Mobile Testing - Universal Appium2 Framework  
+- **Repository**: https://github.com/noisegatemusicstudio/universal-appium2-framework
+- **Status**: ✅ Production Ready (Android + iOS support)
+- **Features**: Cross-platform mobile testing, real device support, touch gestures, device management
+- **Documentation**: [`docs/appium2-framework-summary.md`](docs/appium2-framework-summary.md)
+
+Both frameworks are integrated as git submodules and provide comprehensive testing capabilities for the Gig Grid platform across web and mobile interfaces.
 
 ## Features Overview
 
