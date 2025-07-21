@@ -1,3 +1,6 @@
 [submodule "test-frameworks/playwright-framework"]
 	path = test-frameworks/playwright-framework
 	url = https://github.com/noisegatemusicstudio/universal-playwright-framework.git
+[submodule "test-frameworks/appium2-framework"]
+	path = test-frameworks/appium2-framework
+	url = https://github.com/noisegatemusicstudio/universal-appium2-framework.git
