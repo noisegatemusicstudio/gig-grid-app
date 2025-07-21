@@ -246,17 +246,17 @@ git merge uat
   },
   "database": {
     "type": "dynamodb",
-    "region": "us-east-1",
+    "region": "ap-southeast-1",
     "tablePrefix": "GigGrid-SIT-"
   },
   "email": {
     "provider": "aws-ses",
-    "region": "us-east-1",
+    "region": "ap-southeast-1",
     "sandboxMode": true
   },
   "authentication": {
     "provider": "aws-cognito",
-    "userPoolId": "us-east-1_SITPOOL",
+    "userPoolId": "ap-southeast-1_SITPOOL",
     "clientId": "sit-client-id"
   }
 }

@@ -10,10 +10,21 @@ This project follows a BDD methodology where features are defined in plain Engli
 
 ```
 gig-grid-app/
-├── features/                           # BDD Feature files
-│   ├── user_registration.feature       # User sign-up scenarios
-│   ├── user_signin.feature            # User authentication scenarios
+├── .github/workflows/                  # CI/CD pipeline configurations
+│   └── ci-cd.yml                      # GitHub Actions workflow
+├── config/                            # Environment-specific configurations
+│   ├── development.json               # Local development config
+│   ├── sit.json                       # SIT environment config
+│   ├── uat.json                       # UAT environment config
+│   └── production.json                # Production environment config
+├── docs/                              # Documentation
+│   └── branching-strategy.md          # Git branching strategy
+├── features/                          # BDD Feature files
+│   ├── user_registration.feature      # User sign-up scenarios
+│   ├── user_signin.feature           # User authentication scenarios
 │   └── user_profile_management.feature # Profile management scenarios
+├── scripts/                           # Development and deployment scripts
+│   └── setup-dev.sh                  # Development environment setup
 ├── test-data/                         # Test data for BDD scenarios
 │   ├── test_users.csv                 # Comprehensive user test data
 │   ├── verification_data.csv          # Email and verification test data
@@ -139,33 +150,85 @@ gig-grid-app/
 - `@security` - Security-related scenarios
 - `@artist-type-selection` - Dynamic form behavior
 
-## Next Steps
+## Git Branching Strategy
 
-1. **Implementation Planning**
-   - Choose technology stack (React Native, Flutter, Next.js, etc.)
-   - Set up development environment with Amazon SES
-   - Create project architecture supporting user type differentiation
+This project follows a multi-environment branching strategy designed for safe, progressive deployment:
 
-2. **Step Definitions**
-   - Implement Cucumber/Behave step definitions
-   - Create test automation framework with CSV data integration
-   - Set up CI/CD pipeline with test data management
+### Branch Structure
+```
+main (production)
+├── uat (user acceptance testing)
+├── sit (system integration testing)  
+└── dev (development)
+    ├── feature/user-registration-ui
+    ├── feature/artist-profile-setup
+    └── feature/booking-system
+```
 
-3. **Backend Development**
-   - Design database schema for fans, bands, and solo artists
-   - Implement API endpoints with user type-specific logic
-   - Set up authentication system with Amazon SES integration
+### Environments
 
-4. **Frontend Development**
-   - Create responsive UI components with conditional rendering
-   - Implement dynamic forms based on user type selection
-   - Add real-time features and validation
+#### `dev` Branch - Local Development
+- **Purpose**: UI/UX development with mock data
+- **Backend**: JSON Server for API simulation
+- **Database**: Local JSON files
+- **Email**: Mock email service (console logging)
+- **Testing**: BDD scenarios with test data
+- **Fast iteration**: No external dependencies
 
-5. **Testing**
-   - Unit tests with comprehensive data coverage
-   - Integration tests using CSV test data
-   - End-to-end tests across all user types
-   - Performance testing with multiple user scenarios
+#### `sit` Branch - System Integration Testing  
+- **Purpose**: Backend integration with AWS services
+- **Backend**: AWS Amplify
+- **Database**: DynamoDB (development tables)
+- **Email**: Amazon SES (sandbox mode)
+- **Authentication**: AWS Cognito
+- **Testing**: Integration and API testing
+
+#### `uat` Branch - User Acceptance Testing
+- **Purpose**: Production-like environment for final testing
+- **Backend**: AWS Amplify (staging)
+- **Database**: DynamoDB (staging tables)  
+- **Email**: Amazon SES (production mode, limited)
+- **Testing**: Performance, load, and user acceptance testing
+
+#### `main` Branch - Production
+- **Purpose**: Live production environment
+- **Backend**: AWS Amplify (production)
+- **Database**: DynamoDB (production tables)
+- **Email**: Amazon SES (full production)
+- **Monitoring**: Full observability and alerting
+
+### Development Workflow
+
+1. **Feature Development**: Work in `dev` branch with mock data
+2. **Integration Testing**: Merge to `sit` for AWS integration
+3. **User Testing**: Promote to `uat` for production-like testing  
+4. **Production**: Deploy to `main` after UAT approval
+
+📖 **Detailed Strategy**: See [docs/branching-strategy.md](docs/branching-strategy.md)
+
+## Quick Start
+
+### Local Development Setup
+```bash
+# Clone the repository
+git clone https://github.com/noisegatemusicstudio/gig-grid-app.git
+cd gig-grid-app
+
+# Switch to development branch
+git checkout dev
+
+# Run setup script
+chmod +x scripts/setup-dev.sh
+./scripts/setup-dev.sh
+
+# Start development environment
+npm run dev
+```
+
+This will set up:
+- Mock API server on port 3001
+- Development environment with test data
+- Project structure for rapid UI development
 
 ## Benefits of This Approach
 

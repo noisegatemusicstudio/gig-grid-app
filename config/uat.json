@@ -12,7 +12,7 @@
   },
   "database": {
     "type": "dynamodb",
-    "region": "us-east-1",
+    "region": "ap-southeast-1",
     "tablePrefix": "GigGrid-UAT-",
     "tables": {
       "users": "GigGrid-UAT-Users",
@@ -24,14 +24,14 @@
   },
   "email": {
     "provider": "aws-ses",
-    "region": "us-east-1",
+    "region": "ap-southeast-1",
     "sandboxMode": false,
     "from": "noreply@gigrid-uat.com",
     "replyTo": "support@gigrid-uat.com"
   },
   "authentication": {
     "provider": "aws-cognito",
-    "region": "us-east-1",
+    "region": "ap-southeast-1",
     "userPoolId": "${AWS_COGNITO_USER_POOL_ID_UAT}",
     "clientId": "${AWS_COGNITO_CLIENT_ID_UAT}",
     "sessionTimeout": 7200000,
@@ -40,7 +40,7 @@
   },
   "storage": {
     "provider": "aws-s3",
-    "region": "us-east-1",
+    "region": "ap-southeast-1",
     "bucket": "gigrid-uat-uploads",
     "maxFileSize": "100MB",
     "allowedTypes": ["image/jpeg", "image/png", "image/webp", "audio/mpeg", "audio/wav", "video/mp4"],
@@ -55,10 +55,10 @@
       "branch": "uat"
     },
     "lambda": {
-      "region": "us-east-1"
+      "region": "ap-southeast-1"
     },
     "apiGateway": {
-      "region": "us-east-1",
+      "region": "ap-southeast-1",
       "stage": "uat"
     }
   },

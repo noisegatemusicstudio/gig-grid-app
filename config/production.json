@@ -12,7 +12,7 @@
   },
   "database": {
     "type": "dynamodb",
-    "region": "us-east-1",
+    "region": "ap-southeast-1",
     "tablePrefix": "GigGrid-PROD-",
     "tables": {
       "users": "GigGrid-PROD-Users",
@@ -27,7 +27,7 @@
   },
   "email": {
     "provider": "aws-ses",
-    "region": "us-east-1",
+    "region": "ap-southeast-1",
     "sandboxMode": false,
     "from": "noreply@gigrid.com",
     "replyTo": "support@gigrid.com",
@@ -35,7 +35,7 @@
   },
   "authentication": {
     "provider": "aws-cognito",
-    "region": "us-east-1",
+    "region": "ap-southeast-1",
     "userPoolId": "${AWS_COGNITO_USER_POOL_ID_PROD}",
     "clientId": "${AWS_COGNITO_CLIENT_ID_PROD}",
     "sessionTimeout": 7200000,
@@ -44,7 +44,7 @@
   },
   "storage": {
     "provider": "aws-s3",
-    "region": "us-east-1",
+    "region": "ap-southeast-1",
     "bucket": "gigrid-prod-uploads",
     "maxFileSize": "100MB",
     "allowedTypes": ["image/jpeg", "image/png", "image/webp", "audio/mpeg", "audio/wav", "video/mp4"],
@@ -61,10 +61,10 @@
       "branch": "main"
     },
     "lambda": {
-      "region": "us-east-1"
+      "region": "ap-southeast-1"
     },
     "apiGateway": {
-      "region": "us-east-1",
+      "region": "ap-southeast-1",
       "stage": "prod"
     }
   },
