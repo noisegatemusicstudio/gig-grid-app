@@ -14,6 +14,10 @@
     "type": "dynamodb",
     "region": "ap-southeast-1",
     "tablePrefix": "GigGrid-UAT-",
+    "billingMode": "PAY_PER_REQUEST",
+    "freeTier": true,
+    "readCapacityUnits": 5,
+    "writeCapacityUnits": 5,
     "tables": {
       "users": "GigGrid-UAT-Users",
       "artists": "GigGrid-UAT-Artists",
@@ -25,52 +29,65 @@
   "email": {
     "provider": "aws-ses",
     "region": "ap-southeast-1",
-    "sandboxMode": false,
+    "sandboxMode": true,
+    "freeTier": true,
+    "monthlyLimit": 200,
     "from": "noreply@gigrid-uat.com",
     "replyTo": "support@gigrid-uat.com"
   },
   "authentication": {
     "provider": "aws-cognito",
     "region": "ap-southeast-1",
+    "freeTier": true,
+    "monthlyActiveUsers": 50000,
     "userPoolId": "${AWS_COGNITO_USER_POOL_ID_UAT}",
     "clientId": "${AWS_COGNITO_CLIENT_ID_UAT}",
     "sessionTimeout": 7200000,
-    "enableTwoFactor": true,
-    "mfaConfiguration": "OPTIONAL"
+    "enableTwoFactor": false,
+    "mfaConfiguration": "OFF"
   },
   "storage": {
     "provider": "aws-s3",
     "region": "ap-southeast-1",
     "bucket": "gigrid-uat-uploads",
-    "maxFileSize": "100MB",
-    "allowedTypes": ["image/jpeg", "image/png", "image/webp", "audio/mpeg", "audio/wav", "video/mp4"],
+    "freeTier": true,
+    "storageLimit": "5GB",
+    "maxFileSize": "5MB",
+    "requestLimit": 20000,
+    "allowedTypes": ["image/jpeg", "image/png", "image/webp", "audio/mpeg", "audio/wav"],
     "cdn": {
-      "enabled": true,
-      "domain": "cdn-uat.gigrid.com"
+      "enabled": false
     }
   },
   "aws": {
     "amplify": {
       "appId": "${AWS_AMPLIFY_APP_ID_UAT}",
-      "branch": "uat"
+      "branch": "uat",
+      "freeTier": true,
+      "buildMinutes": 1000
     },
     "lambda": {
-      "region": "ap-southeast-1"
+      "region": "ap-southeast-1",
+      "freeTier": true,
+      "requestLimit": 1000000,
+      "computeTime": 400000
     },
     "apiGateway": {
       "region": "ap-southeast-1",
-      "stage": "uat"
+      "stage": "uat",
+      "freeTier": true,
+      "requestLimit": 1000000
     }
   },
   "features": {
     "registration": true,
-    "socialLogin": true,
+    "socialLogin": false,
     "emailVerification": true,
     "profileManagement": true,
-    "artistVerification": true,
-    "paymentProcessing": true,
+    "artistVerification": false,
+    "paymentProcessing": false,
     "bookingSystem": true,
-    "messaging": true,
+    "messaging": false,
     "notifications": true
   },
   "ui": {
@@ -93,7 +110,7 @@
   "security": {
     "rateLimit": {
       "enabled": true,
-      "requests": 1000,
+      "requests": 100,
       "window": 900000
     },
     "cors": {

@@ -14,6 +14,10 @@
     "type": "dynamodb",
     "region": "ap-southeast-1",
     "tablePrefix": "GigGrid-SIT-",
+    "billingMode": "PAY_PER_REQUEST",
+    "freeTier": true,
+    "readCapacityUnits": 5,
+    "writeCapacityUnits": 5,
     "tables": {
       "users": "GigGrid-SIT-Users",
       "artists": "GigGrid-SIT-Artists",
@@ -25,45 +29,62 @@
     "provider": "aws-ses",
     "region": "ap-southeast-1",
     "sandboxMode": true,
+    "freeTier": true,
+    "monthlyLimit": 200,
     "from": "noreply@gigrid-sit.com",
     "replyTo": "support@gigrid-sit.com"
   },
   "authentication": {
     "provider": "aws-cognito",
     "region": "ap-southeast-1",
+    "freeTier": true,
+    "monthlyActiveUsers": 50000,
     "userPoolId": "${AWS_COGNITO_USER_POOL_ID_SIT}",
     "clientId": "${AWS_COGNITO_CLIENT_ID_SIT}",
     "sessionTimeout": 3600000,
-    "enableTwoFactor": true
+    "enableTwoFactor": false,
+    "mfaConfiguration": "OFF"
   },
   "storage": {
     "provider": "aws-s3",
     "region": "ap-southeast-1",
     "bucket": "gigrid-sit-uploads",
-    "maxFileSize": "50MB",
+    "freeTier": true,
+    "storageLimit": "5GB",
+    "maxFileSize": "5MB",
+    "requestLimit": 20000,
     "allowedTypes": ["image/jpeg", "image/png", "audio/mpeg", "audio/wav"]
   },
   "aws": {
     "amplify": {
       "appId": "${AWS_AMPLIFY_APP_ID_SIT}",
-      "branch": "sit"
+      "branch": "sit",
+      "freeTier": true,
+      "buildMinutes": 1000
     },
     "lambda": {
-      "region": "ap-southeast-1"
+      "region": "ap-southeast-1",
+      "freeTier": true,
+      "requestLimit": 1000000,
+      "computeTime": 400000
     },
     "apiGateway": {
       "region": "ap-southeast-1",
-      "stage": "sit"
+      "stage": "sit",
+      "freeTier": true,
+      "requestLimit": 1000000
     }
   },
   "features": {
     "registration": true,
-    "socialLogin": true,
+    "socialLogin": false,
     "emailVerification": true,
     "profileManagement": true,
-    "artistVerification": true,
+    "artistVerification": false,
     "paymentProcessing": false,
-    "bookingSystem": true
+    "bookingSystem": true,
+    "messaging": false,
+    "notifications": true
   },
   "ui": {
     "theme": "sit",

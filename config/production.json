@@ -14,6 +14,10 @@
     "type": "dynamodb",
     "region": "ap-southeast-1",
     "tablePrefix": "GigGrid-PROD-",
+    "billingMode": "PAY_PER_REQUEST",
+    "freeTier": true,
+    "readCapacityUnits": 5,
+    "writeCapacityUnits": 5,
     "tables": {
       "users": "GigGrid-PROD-Users",
       "artists": "GigGrid-PROD-Artists",
@@ -22,64 +26,80 @@
       "payments": "GigGrid-PROD-Payments",
       "reviews": "GigGrid-PROD-Reviews"
     },
-    "backupEnabled": true,
-    "pointInTimeRecovery": true
+    "backupEnabled": false,
+    "pointInTimeRecovery": false
   },
   "email": {
     "provider": "aws-ses",
     "region": "ap-southeast-1",
-    "sandboxMode": false,
+    "sandboxMode": true,
+    "freeTier": true,
+    "monthlyLimit": 200,
     "from": "noreply@gigrid.com",
     "replyTo": "support@gigrid.com",
-    "dkim": true
+    "dkim": false
   },
   "authentication": {
     "provider": "aws-cognito",
     "region": "ap-southeast-1",
+    "freeTier": true,
+    "monthlyActiveUsers": 50000,
     "userPoolId": "${AWS_COGNITO_USER_POOL_ID_PROD}",
     "clientId": "${AWS_COGNITO_CLIENT_ID_PROD}",
     "sessionTimeout": 7200000,
-    "enableTwoFactor": true,
-    "mfaConfiguration": "REQUIRED_FOR_ARTISTS"
+    "enableTwoFactor": false,
+    "mfaConfiguration": "OFF"
   },
   "storage": {
     "provider": "aws-s3",
     "region": "ap-southeast-1",
     "bucket": "gigrid-prod-uploads",
-    "maxFileSize": "100MB",
-    "allowedTypes": ["image/jpeg", "image/png", "image/webp", "audio/mpeg", "audio/wav", "video/mp4"],
+    "freeTier": true,
+    "storageLimit": "5GB",
+    "maxFileSize": "5MB",
+    "requestLimit": 20000,
+    "allowedTypes": ["image/jpeg", "image/png", "image/webp", "audio/mpeg", "audio/wav"],
     "cdn": {
-      "enabled": true,
-      "domain": "cdn.gigrid.com"
+      "enabled": false
     },
-    "versioning": true,
-    "encryption": true
+    "versioning": false,
+    "encryption": false
   },
   "aws": {
     "amplify": {
       "appId": "${AWS_AMPLIFY_APP_ID_PROD}",
-      "branch": "main"
+      "branch": "main",
+      "freeTier": true,
+      "buildTimeLimit": 10
     },
     "lambda": {
-      "region": "ap-southeast-1"
+      "region": "ap-southeast-1",
+      "freeTier": true,
+      "requestLimit": 1000000,
+      "durationLimit": 400000,
+      "memorySize": 128,
+      "timeout": 15
     },
     "apiGateway": {
       "region": "ap-southeast-1",
-      "stage": "prod"
+      "stage": "prod",
+      "freeTier": true,
+      "requestLimit": 1000000,
+      "caching": false
     }
   },
   "features": {
     "registration": true,
-    "socialLogin": true,
+    "socialLogin": false,
     "emailVerification": true,
     "profileManagement": true,
     "artistVerification": true,
-    "paymentProcessing": true,
+    "paymentProcessing": false,
     "bookingSystem": true,
-    "messaging": true,
-    "notifications": true,
-    "analytics": true,
-    "reporting": true
+    "messaging": false,
+    "notifications": false,
+    "analytics": false,
+    "reporting": false
   },
   "ui": {
     "theme": "production",
@@ -91,19 +111,21 @@
     "cloudWatch": true,
     "logGroup": "/aws/lambda/gigrid-prod",
     "console": false,
-    "retention": 30
+    "retention": 7,
+    "freeTier": true
   },
   "monitoring": {
-    "enabled": true,
+    "enabled": false,
     "cloudWatch": true,
-    "xray": true,
-    "performanceMonitoring": true,
-    "alerting": true
+    "xray": false,
+    "performanceMonitoring": false,
+    "alerting": false,
+    "freeTier": true
   },
   "security": {
     "rateLimit": {
-      "enabled": true,
-      "requests": 10000,
+      "enabled": false,
+      "requests": 1000,
       "window": 900000
     },
     "cors": {
@@ -112,12 +134,12 @@
       "credentials": true
     },
     "waf": {
-      "enabled": true
+      "enabled": false
     }
   },
   "backup": {
-    "enabled": true,
-    "schedule": "daily",
-    "retention": 30
+    "enabled": false,
+    "schedule": "weekly",
+    "retention": 7
   }
 }
