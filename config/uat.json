@@ -1,0 +1,105 @@
+{
+  "environment": "uat",
+  "app": {
+    "name": "Gig Grid UAT",
+    "version": "1.0.0",
+    "debug": false
+  },
+  "api": {
+    "baseUrl": "https://api-uat.gigrid.com",
+    "timeout": 10000,
+    "mockData": false
+  },
+  "database": {
+    "type": "dynamodb",
+    "region": "us-east-1",
+    "tablePrefix": "GigGrid-UAT-",
+    "tables": {
+      "users": "GigGrid-UAT-Users",
+      "artists": "GigGrid-UAT-Artists",
+      "events": "GigGrid-UAT-Events",
+      "bookings": "GigGrid-UAT-Bookings",
+      "payments": "GigGrid-UAT-Payments"
+    }
+  },
+  "email": {
+    "provider": "aws-ses",
+    "region": "us-east-1",
+    "sandboxMode": false,
+    "from": "noreply@gigrid-uat.com",
+    "replyTo": "support@gigrid-uat.com"
+  },
+  "authentication": {
+    "provider": "aws-cognito",
+    "region": "us-east-1",
+    "userPoolId": "${AWS_COGNITO_USER_POOL_ID_UAT}",
+    "clientId": "${AWS_COGNITO_CLIENT_ID_UAT}",
+    "sessionTimeout": 7200000,
+    "enableTwoFactor": true,
+    "mfaConfiguration": "OPTIONAL"
+  },
+  "storage": {
+    "provider": "aws-s3",
+    "region": "us-east-1",
+    "bucket": "gigrid-uat-uploads",
+    "maxFileSize": "100MB",
+    "allowedTypes": ["image/jpeg", "image/png", "image/webp", "audio/mpeg", "audio/wav", "video/mp4"],
+    "cdn": {
+      "enabled": true,
+      "domain": "cdn-uat.gigrid.com"
+    }
+  },
+  "aws": {
+    "amplify": {
+      "appId": "${AWS_AMPLIFY_APP_ID_UAT}",
+      "branch": "uat"
+    },
+    "lambda": {
+      "region": "us-east-1"
+    },
+    "apiGateway": {
+      "region": "us-east-1",
+      "stage": "uat"
+    }
+  },
+  "features": {
+    "registration": true,
+    "socialLogin": true,
+    "emailVerification": true,
+    "profileManagement": true,
+    "artistVerification": true,
+    "paymentProcessing": true,
+    "bookingSystem": true,
+    "messaging": true,
+    "notifications": true
+  },
+  "ui": {
+    "theme": "production",
+    "showDebugInfo": false,
+    "enableHotReload": false
+  },
+  "logging": {
+    "level": "warn",
+    "cloudWatch": true,
+    "logGroup": "/aws/lambda/gigrid-uat",
+    "console": false
+  },
+  "monitoring": {
+    "enabled": true,
+    "cloudWatch": true,
+    "xray": true,
+    "performanceMonitoring": true
+  },
+  "security": {
+    "rateLimit": {
+      "enabled": true,
+      "requests": 1000,
+      "window": 900000
+    },
+    "cors": {
+      "origins": ["https://uat.gigrid.com"],
+      "methods": ["GET", "POST", "PUT", "DELETE"],
+      "credentials": true
+    }
+  }
+}

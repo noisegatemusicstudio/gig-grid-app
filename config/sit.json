@@ -1,0 +1,84 @@
+{
+  "environment": "sit",
+  "app": {
+    "name": "Gig Grid SIT",
+    "version": "1.0.0",
+    "debug": true
+  },
+  "api": {
+    "baseUrl": "https://api-sit.gigrid.com",
+    "timeout": 10000,
+    "mockData": false
+  },
+  "database": {
+    "type": "dynamodb",
+    "region": "us-east-1",
+    "tablePrefix": "GigGrid-SIT-",
+    "tables": {
+      "users": "GigGrid-SIT-Users",
+      "artists": "GigGrid-SIT-Artists",
+      "events": "GigGrid-SIT-Events",
+      "bookings": "GigGrid-SIT-Bookings"
+    }
+  },
+  "email": {
+    "provider": "aws-ses",
+    "region": "us-east-1",
+    "sandboxMode": true,
+    "from": "noreply@gigrid-sit.com",
+    "replyTo": "support@gigrid-sit.com"
+  },
+  "authentication": {
+    "provider": "aws-cognito",
+    "region": "us-east-1",
+    "userPoolId": "${AWS_COGNITO_USER_POOL_ID_SIT}",
+    "clientId": "${AWS_COGNITO_CLIENT_ID_SIT}",
+    "sessionTimeout": 3600000,
+    "enableTwoFactor": true
+  },
+  "storage": {
+    "provider": "aws-s3",
+    "region": "us-east-1",
+    "bucket": "gigrid-sit-uploads",
+    "maxFileSize": "50MB",
+    "allowedTypes": ["image/jpeg", "image/png", "audio/mpeg", "audio/wav"]
+  },
+  "aws": {
+    "amplify": {
+      "appId": "${AWS_AMPLIFY_APP_ID_SIT}",
+      "branch": "sit"
+    },
+    "lambda": {
+      "region": "us-east-1"
+    },
+    "apiGateway": {
+      "region": "us-east-1",
+      "stage": "sit"
+    }
+  },
+  "features": {
+    "registration": true,
+    "socialLogin": true,
+    "emailVerification": true,
+    "profileManagement": true,
+    "artistVerification": true,
+    "paymentProcessing": false,
+    "bookingSystem": true
+  },
+  "ui": {
+    "theme": "sit",
+    "showDebugInfo": true,
+    "enableHotReload": false
+  },
+  "logging": {
+    "level": "info",
+    "cloudWatch": true,
+    "logGroup": "/aws/lambda/gigrid-sit",
+    "console": false
+  },
+  "monitoring": {
+    "enabled": true,
+    "cloudWatch": true,
+    "xray": true
+  }
+}

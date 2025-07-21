@@ -1,0 +1,123 @@
+{
+  "environment": "production",
+  "app": {
+    "name": "Gig Grid",
+    "version": "1.0.0",
+    "debug": false
+  },
+  "api": {
+    "baseUrl": "https://api.gigrid.com",
+    "timeout": 15000,
+    "mockData": false
+  },
+  "database": {
+    "type": "dynamodb",
+    "region": "us-east-1",
+    "tablePrefix": "GigGrid-PROD-",
+    "tables": {
+      "users": "GigGrid-PROD-Users",
+      "artists": "GigGrid-PROD-Artists",
+      "events": "GigGrid-PROD-Events",
+      "bookings": "GigGrid-PROD-Bookings",
+      "payments": "GigGrid-PROD-Payments",
+      "reviews": "GigGrid-PROD-Reviews"
+    },
+    "backupEnabled": true,
+    "pointInTimeRecovery": true
+  },
+  "email": {
+    "provider": "aws-ses",
+    "region": "us-east-1",
+    "sandboxMode": false,
+    "from": "noreply@gigrid.com",
+    "replyTo": "support@gigrid.com",
+    "dkim": true
+  },
+  "authentication": {
+    "provider": "aws-cognito",
+    "region": "us-east-1",
+    "userPoolId": "${AWS_COGNITO_USER_POOL_ID_PROD}",
+    "clientId": "${AWS_COGNITO_CLIENT_ID_PROD}",
+    "sessionTimeout": 7200000,
+    "enableTwoFactor": true,
+    "mfaConfiguration": "REQUIRED_FOR_ARTISTS"
+  },
+  "storage": {
+    "provider": "aws-s3",
+    "region": "us-east-1",
+    "bucket": "gigrid-prod-uploads",
+    "maxFileSize": "100MB",
+    "allowedTypes": ["image/jpeg", "image/png", "image/webp", "audio/mpeg", "audio/wav", "video/mp4"],
+    "cdn": {
+      "enabled": true,
+      "domain": "cdn.gigrid.com"
+    },
+    "versioning": true,
+    "encryption": true
+  },
+  "aws": {
+    "amplify": {
+      "appId": "${AWS_AMPLIFY_APP_ID_PROD}",
+      "branch": "main"
+    },
+    "lambda": {
+      "region": "us-east-1"
+    },
+    "apiGateway": {
+      "region": "us-east-1",
+      "stage": "prod"
+    }
+  },
+  "features": {
+    "registration": true,
+    "socialLogin": true,
+    "emailVerification": true,
+    "profileManagement": true,
+    "artistVerification": true,
+    "paymentProcessing": true,
+    "bookingSystem": true,
+    "messaging": true,
+    "notifications": true,
+    "analytics": true,
+    "reporting": true
+  },
+  "ui": {
+    "theme": "production",
+    "showDebugInfo": false,
+    "enableHotReload": false
+  },
+  "logging": {
+    "level": "error",
+    "cloudWatch": true,
+    "logGroup": "/aws/lambda/gigrid-prod",
+    "console": false,
+    "retention": 30
+  },
+  "monitoring": {
+    "enabled": true,
+    "cloudWatch": true,
+    "xray": true,
+    "performanceMonitoring": true,
+    "alerting": true
+  },
+  "security": {
+    "rateLimit": {
+      "enabled": true,
+      "requests": 10000,
+      "window": 900000
+    },
+    "cors": {
+      "origins": ["https://gigrid.com", "https://www.gigrid.com"],
+      "methods": ["GET", "POST", "PUT", "DELETE"],
+      "credentials": true
+    },
+    "waf": {
+      "enabled": true
+    }
+  },
+  "backup": {
+    "enabled": true,
+    "schedule": "daily",
+    "retention": 30
+  }
+}

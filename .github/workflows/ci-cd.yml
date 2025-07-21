@@ -1,0 +1,266 @@
+name: Gig Grid CI/CD Pipeline
+
+on:
+  push:
+    branches: [ dev, sit, uat, main ]
+  pull_request:
+    branches: [ dev, sit, uat, main ]
+
+env:
+  NODE_VERSION: '18.x'
+
+jobs:
+  # Development Environment Pipeline
+  dev-pipeline:
+    if: github.ref == 'refs/heads/dev' || github.base_ref == 'dev'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run unit tests
+      run: npm run test:unit
+      
+    - name: Run BDD scenarios with mock data
+      run: npm run test:bdd:mock
+      
+    - name: Build application (development)
+      run: npm run build:dev
+      
+    - name: Deploy to development server
+      run: echo "Deploy to local development server"
+      # Add actual deployment steps for local/dev server
+
+  # SIT Environment Pipeline
+  sit-pipeline:
+    if: github.ref == 'refs/heads/sit'
+    runs-on: ubuntu-latest
+    environment: sit
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run unit tests
+      run: npm run test:unit
+      
+    - name: Run integration tests
+      run: npm run test:integration
+      
+    - name: Build application (SIT)
+      run: npm run build:sit
+      env:
+        AWS_COGNITO_USER_POOL_ID_SIT: ${{ secrets.AWS_COGNITO_USER_POOL_ID_SIT }}
+        AWS_COGNITO_CLIENT_ID_SIT: ${{ secrets.AWS_COGNITO_CLIENT_ID_SIT }}
+        AWS_AMPLIFY_APP_ID_SIT: ${{ secrets.AWS_AMPLIFY_APP_ID_SIT }}
+        
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_SIT }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_SIT }}
+        aws-region: us-east-1
+        
+    - name: Deploy to AWS Amplify (SIT)
+      run: |
+        aws amplify start-deployment --app-id ${{ secrets.AWS_AMPLIFY_APP_ID_SIT }} --branch-name sit
+        
+    - name: Wait for deployment
+      run: |
+        echo "Waiting for deployment to complete..."
+        sleep 60
+        
+    - name: Run E2E tests against SIT environment
+      run: npm run test:e2e:sit
+      env:
+        TEST_URL: https://sit.${{ secrets.DOMAIN_NAME }}
+        
+    - name: Send notification
+      if: always()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        channel: '#deployments'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+
+  # UAT Environment Pipeline
+  uat-pipeline:
+    if: github.ref == 'refs/heads/uat'
+    runs-on: ubuntu-latest
+    environment: uat
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run full test suite
+      run: npm run test:all
+      
+    - name: Build application (UAT)
+      run: npm run build:uat
+      env:
+        AWS_COGNITO_USER_POOL_ID_UAT: ${{ secrets.AWS_COGNITO_USER_POOL_ID_UAT }}
+        AWS_COGNITO_CLIENT_ID_UAT: ${{ secrets.AWS_COGNITO_CLIENT_ID_UAT }}
+        AWS_AMPLIFY_APP_ID_UAT: ${{ secrets.AWS_AMPLIFY_APP_ID_UAT }}
+        
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_UAT }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_UAT }}
+        aws-region: us-east-1
+        
+    - name: Deploy to AWS Amplify (UAT)
+      run: |
+        aws amplify start-deployment --app-id ${{ secrets.AWS_AMPLIFY_APP_ID_UAT }} --branch-name uat
+        
+    - name: Wait for deployment
+      run: |
+        echo "Waiting for deployment to complete..."
+        sleep 120
+        
+    - name: Run performance tests
+      run: npm run test:performance
+      env:
+        TEST_URL: https://uat.${{ secrets.DOMAIN_NAME }}
+        
+    - name: Run user acceptance tests
+      run: npm run test:uat
+      env:
+        TEST_URL: https://uat.${{ secrets.DOMAIN_NAME }}
+        
+    - name: Generate test reports
+      run: npm run reports:generate
+      
+    - name: Upload test reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: uat-test-reports
+        path: reports/
+        
+    - name: Send notification
+      if: always()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        channel: '#deployments'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+
+  # Production Environment Pipeline
+  production-pipeline:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run full test suite
+      run: npm run test:all
+      
+    - name: Build application (Production)
+      run: npm run build:prod
+      env:
+        AWS_COGNITO_USER_POOL_ID_PROD: ${{ secrets.AWS_COGNITO_USER_POOL_ID_PROD }}
+        AWS_COGNITO_CLIENT_ID_PROD: ${{ secrets.AWS_COGNITO_CLIENT_ID_PROD }}
+        AWS_AMPLIFY_APP_ID_PROD: ${{ secrets.AWS_AMPLIFY_APP_ID_PROD }}
+        
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}
+        aws-region: us-east-1
+        
+    - name: Deploy to AWS Amplify (Production)
+      run: |
+        aws amplify start-deployment --app-id ${{ secrets.AWS_AMPLIFY_APP_ID_PROD }} --branch-name main
+        
+    - name: Wait for deployment
+      run: |
+        echo "Waiting for deployment to complete..."
+        sleep 180
+        
+    - name: Run health checks
+      run: npm run health-check
+      env:
+        TEST_URL: https://${{ secrets.DOMAIN_NAME }}
+        
+    - name: Monitor deployment
+      run: npm run monitor:deployment
+      
+    - name: Send success notification
+      if: success()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: 'success'
+        channel: '#deployments'
+        text: '🚀 Production deployment successful!'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        
+    - name: Send failure notification
+      if: failure()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: 'failure'
+        channel: '#deployments'
+        text: '❌ Production deployment failed! Manual intervention required.'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+
+  # Security and Quality Gates
+  security-scan:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run security scan
+      uses: securecodewarrior/github-action-add-sarif@v1
+      with:
+        sarif-file: 'security-scan-results.sarif'
+        
+    - name: Run dependency check
+      run: npm audit --audit-level high
+      
+    - name: Run code quality check
+      run: npm run lint && npm run type-check

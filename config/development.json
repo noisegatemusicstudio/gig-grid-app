@@ -1,0 +1,53 @@
+{
+  "environment": "development",
+  "app": {
+    "name": "Gig Grid",
+    "version": "1.0.0",
+    "debug": true
+  },
+  "api": {
+    "baseUrl": "http://localhost:3001",
+    "timeout": 5000,
+    "mockData": true
+  },
+  "database": {
+    "type": "json-server",
+    "file": "./mock-data/db.json",
+    "port": 3001
+  },
+  "email": {
+    "provider": "mock",
+    "logEmails": true,
+    "mockDelay": 1000,
+    "from": "noreply@gigrid-dev.local"
+  },
+  "authentication": {
+    "provider": "mock",
+    "mockUsers": true,
+    "sessionTimeout": 3600000,
+    "enableTwoFactor": false
+  },
+  "storage": {
+    "provider": "local",
+    "basePath": "./uploads",
+    "maxFileSize": "10MB"
+  },
+  "features": {
+    "registration": true,
+    "socialLogin": true,
+    "emailVerification": true,
+    "profileManagement": true,
+    "artistVerification": false,
+    "paymentProcessing": false
+  },
+  "ui": {
+    "theme": "development",
+    "showDebugInfo": true,
+    "enableHotReload": true
+  },
+  "logging": {
+    "level": "debug",
+    "file": "./logs/development.log",
+    "console": true
+  }
+}
